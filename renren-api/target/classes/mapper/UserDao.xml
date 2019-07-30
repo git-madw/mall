@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.dao.UserDao">
+
+    <select id="getUserByMobile" resultType="io.renren.entity.UserEntity">
+        select * from tb_user where mobile = #{value}
+    </select>
+
+    <select id="getUserByUserId" resultType="io.renren.entity.UserEntity">
+        select * from tb_user where id = #{value}
+    </select>
+    <insert id="insertAgent" parameterType="String">
+        INSERT INTO sys_user_agent
+        (agentId,userId)
+        VALUES (
+        <if test="userId != null and userId != ''">
+            #{userId},
+        </if>
+        <if test="agentId != null and agentId !=''">
+            #{agentId}
+        </if>
+        )
+    </insert>
+    <select id="getAgentProduction" resultType="String" parameterType="java.util.List">
+        SELECT productionId FROM user_production
+        <where>
+            <if test="agentId != null and agentId != ''">
+                userId = #{agentId}
+            </if>
+        </where>
+    </select>
+    <insert id="insertProductionList" parameterType="java.util.List" useGeneratedKeys="false">
+        insert into user_production
+        (userId,productionId)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            <if test="userId != null and userId != ''">
+                #{userId},
+            </if>
+            <if test="item != null and item != ''">
+                #{item}
+            </if>
+            )
+        </foreach>
+    </insert>
+</mapper>

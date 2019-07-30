@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.dao.ProductionDao">
+
+    <resultMap id="productionList" type="io.renren.entity.ObjectCommodity">
+        <result column="cId" property="id" />
+        <result column="commodityName" property="commodityName" />
+        <result column="commodityPicture" property="commodityPicture" />
+        <result column="classificationFirstId" property="classificationFirstId" />
+        <result column="classificationSecondId" property="classificationSecondId" />
+        <result column="brandId" property="brandId" />
+        <result column="cDate" property="date" />
+        <result column="cDescription" property="description" />
+        <association property="brand" javaType="io.renren.entity.Brand">
+            <result column="bId" property="id" />
+            <result column="brandName" property="brandName" />
+            <result column="bUrl" property="url" />
+        </association>
+        <association property="sku" javaType="io.renren.entity.Sku">
+            <result column="sId" property="id" />
+            <result column="sCommodityId" property="commodityId" />
+            <result column="inStock" property="inStock" />
+            <result column="price" property="price" />
+            <result column="skuName" property="skuName" />
+            <result column="skuSalesVolume" property="skuSalesVolume" />
+            <result column="inStockAddress" property="inStockAddress" />
+            <result column="sDate" property="date" />
+        </association>
+    </resultMap>
+
+    <select id="getProductions" resultMap="productionList" parameterType="Long">
+        SELECT commodity.id AS cId,commodity.commodityName,commodity.commodityPicture,
+        commodity.classificationFirstId,commodity.classificationSecondId,commodity.brandId,
+        commodity.date AS cDate,commodity.description AS cDescription,c_brand.id AS bId,
+        c_brand.brandName,c_brand.url AS bUrl,c_sku.id AS sId,c_sku.commodityId AS sCommodityId,
+        c_sku.inStock,c_sku.skuName,c_sku.price,c_sku.date AS sDate,c_sku.skuSalesVolume,c_sku.inStockAddress
+        FROM commodity
+        LEFT JOIN c_brand ON commodity.brandId = c_brand.id
+        LEFT JOIN c_sku ON commodity.id = c_sku.commodityId
+        <if test="userId != null and userId != ''">
+            LEFT JOIN user_production ON commodity.id = user_production.productionId
+            <where>
+                user_production.userId = #{userId}
+            </where>
+        </if>
+    </select>
+
+    <select id="getCommodityColor" resultType="io.renren.entity.CommodityColor" parameterType="String">
+        SELECT * FROM c_commodity_color
+        <where>
+            <if test="commodityId != null and commodityId != ''">
+                c_commodity_color.commodityId = #{commodityId}
+            </if>
+        </where>
+    </select>
+    <select id="getCommodityVersion" resultType="io.renren.entity.CommodityVersion" parameterType="String">
+        SELECT * FROM c_commodity_version
+        <where>
+            <if test="commodityId != null and commodityId != ''">
+                c_commodity_version.commodityId = #{commodityId}
+            </if>
+        </where>
+    </select>
+</mapper>
