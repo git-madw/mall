@@ -72,4 +72,12 @@ public interface ProductionService {
      * 更改商品选中状态
      */
     void changeCarStatus(String id,String isChoose);
+    /**
+     * 更改商品选中数量
+     */
+    void changeCarNumber(ShoppingCar shoppingCar);
+    /**
+     * 删除用户购物车中的所有商品
+     */
+    void deleteCarProductions(Long userId);
 }

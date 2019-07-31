@@ -73,4 +73,12 @@ public interface ProductionDao {
      * 更改商品选中状态
      */
     void changeCarStatus(@Param("id") String id,@Param("isChoose") String isChoose);
+    /**
+     * 更改商品选中数量
+     */
+    void changeCarNumber(@Param("shoppingCar") ShoppingCar shoppingCar);
+    /**
+     * 删除用户购物车中的所有商品
+     */
+    void deleteCarProductions(@Param("userId") Long userId);
 }

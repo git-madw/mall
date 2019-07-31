@@ -117,11 +117,49 @@ public class ProductionController {
         productionService.deleteShoppingCar(shoppingCar.getId());
         return new Result().success();
     }
-
+    /**
+     * 功能描述: <br>
+     * 〈更改购物车商品选中状态〉
+     * @Param: [shoppingCar]
+     * @Return: java.lang.Object
+     * @Author: dinggc
+     * @Date: 2019/7/31 19:54
+     */
     @Login
     @RequestMapping(value = "changeCarStatus")
     @ResponseBody
     public Object changeCarStatus(@RequestBody ShoppingCar shoppingCar){
+        productionService.changeCarStatus(shoppingCar.getId(),shoppingCar.getIsChoose());
+        return new Result().success();
+    }
+    /**
+     * 功能描述: <br>
+     * 〈更新用户购物车选中商品的数量〉
+     * @Param: [shoppingCar]
+     * @Return: java.lang.Object
+     * @Author: dinggc
+     * @Date: 2019/7/31 20:20
+     */
+    @Login
+    @RequestMapping(value = "changeCarNumber")
+    @ResponseBody
+    public Object changeCarNumber(@RequestBody ShoppingCar shoppingCar){
+        productionService.changeCarNumber(shoppingCar);
+        return new Result().success();
+    }
+    /**
+     * 功能描述: <br>
+     * 〈删除用户购物车中的所有商品〉
+     * @Param: [shoppingCar]
+     * @Return: java.lang.Object
+     * @Author: dinggc
+     * @Date: 2019/7/31 20:30
+     */
+    @Login
+    @RequestMapping(value = "deleteCarProductions")
+    @ResponseBody
+    public Object deleteCarProductions(@RequestBody ShoppingCar shoppingCar){
+        productionService.deleteCarProductions(shoppingCar.getUserId());
         return new Result().success();
     }
 }

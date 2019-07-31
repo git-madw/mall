@@ -95,4 +95,14 @@ public class ProductionServiceImpl implements ProductionService {
     public void changeCarStatus(String id, String isChoose) {
         productionDao.changeCarStatus(id,isChoose);
     }
+
+    @Override
+    public void changeCarNumber(ShoppingCar shoppingCar) {
+        productionDao.changeCarNumber(shoppingCar);
+    }
+
+    @Override
+    public void deleteCarProductions(Long userId) {
+        productionDao.deleteCarProductions(userId);
+    }
 }
