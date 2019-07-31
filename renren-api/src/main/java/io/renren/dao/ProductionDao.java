@@ -9,13 +9,11 @@
  */
 package io.renren.dao;
 
-import io.renren.entity.CommodityColor;
-import io.renren.entity.CommodityVersion;
-import io.renren.entity.ObjectCommodity;
-import io.renren.entity.ObjectCommodityInfo;
+import io.renren.entity.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 〈一句话功能简述〉<br> 
@@ -50,4 +48,29 @@ public interface ProductionDao {
      * @Date: 2019/7/30 20:58
      */
     List<CommodityVersion> getCommodityVersion(@Param("commodityId") String commodityId);
+    /**
+     * 商品信息存入购物车
+     */
+    void insertShoppingCar(@Param("shoppingCar") ShoppingCar shoppingCar);
+    /**
+     * 判断商品是否在购物车中已经存在
+     */
+    ShoppingCar isExistCarProduction(@Param("commodityId") String commodityId,@Param("skuId") String skuId,
+                                            @Param("colorId") String colorId);
+    /**
+     * 更新购物车商品信息
+     */
+    void updateCarProduction(@Param("shoppingCar") ShoppingCar shoppingCar);
+    /**
+     * 用户获取购物车中的商品
+     */
+    List<ObjectShoppingCar> getShoppingCar(@Param("userId") Long userId);
+    /**
+     * 根据id删除购物车商品
+     */
+    void deleteShoppingCar(@Param("id") String id);
+    /**
+     * 更改商品选中状态
+     */
+    void changeCarStatus(@Param("id") String id,@Param("isChoose") String isChoose);
 }

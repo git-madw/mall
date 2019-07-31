@@ -20,7 +20,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 〈一句话功能简述〉<br> 
@@ -49,6 +52,10 @@ public class ProductionController {
     @ResponseBody
     public Object getProductions(@RequestBody UserEntity userEntity){
         List<ObjectCommodity> productions = productionService.getProductions(userEntity.getId());
+        if(productions.size() == 0){
+            userEntity.setId(null);
+            productions = productionService.getProductions(userEntity.getId());
+        }
         for(ObjectCommodity commodity : productions){
             String commodityId = commodity.getId();
             List<CommodityColor> commodityColor = productionService.getCommodityColor(commodityId);
@@ -59,5 +66,62 @@ public class ProductionController {
             commodity.setObjectCommodityInfo(info);
         }
         return new Result().ok(productions);
+    }
+
+    /**
+     * 插入购物车商品信息
+     * @param shoppingCar
+     * @return
+     */
+    @Login
+    @RequestMapping(value = "insertShoppingCar")
+    @ResponseBody
+    public Object insertShoppingCar(@RequestBody ShoppingCar shoppingCar){
+        Map<String,Object> map = productionService.isExistCarProduction(shoppingCar.getCommodityId(),
+                shoppingCar.getSkuId(),shoppingCar.getColor());
+        if(Boolean.valueOf(String.valueOf(map.get("flag")))){
+            BigDecimal price = BigDecimal.valueOf(Long.valueOf(shoppingCar.getSkuNumber())).multiply(shoppingCar.getSkuPrice());
+            BigDecimal oldPrice = new BigDecimal(String.valueOf(map.get("totalPrice")));
+            BigDecimal totalPrice = price.add(oldPrice);
+            shoppingCar.setTotalPrice(totalPrice);
+            int oldSkuNumber = Integer.valueOf(String.valueOf(map.get("skuNumber")));
+            shoppingCar.setSkuNumber(shoppingCar.getSkuNumber()+oldSkuNumber);
+            shoppingCar.setDate(new Date());
+            productionService.updateCarProduction(shoppingCar);
+        }else{
+            shoppingCar.setDate(new Date());
+            productionService.insertShoppingCar(shoppingCar);
+        }
+        return new Result().success();
+    }
+    /**
+     * 用户获取购物车中的商品
+     */
+    @Login
+    @RequestMapping(value = "getShoppingCar")
+    @ResponseBody
+    public Object getShoppingCar(@RequestBody UserEntity entity){
+        List<ObjectShoppingCar> shoppingCar = productionService.getShoppingCar(entity.getId());
+        return new Result().ok(shoppingCar);
+    }
+
+    /**
+     * 根据id删除购物车商品
+     * @param shoppingCar
+     * @return
+     */
+    @Login
+    @RequestMapping(value = "deleteShoppingCar")
+    @ResponseBody
+    public Object deleteShoppingCar(@RequestBody ShoppingCar shoppingCar){
+        productionService.deleteShoppingCar(shoppingCar.getId());
+        return new Result().success();
+    }
+
+    @Login
+    @RequestMapping(value = "changeCarStatus")
+    @ResponseBody
+    public Object changeCarStatus(@RequestBody ShoppingCar shoppingCar){
+        return new Result().success();
     }
 }

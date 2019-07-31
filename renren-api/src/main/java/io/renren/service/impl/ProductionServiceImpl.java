@@ -10,17 +10,16 @@
 package io.renren.service.impl;
 
 import io.renren.dao.ProductionDao;
-import io.renren.entity.CommodityColor;
-import io.renren.entity.CommodityVersion;
-import io.renren.entity.ObjectCommodity;
-import io.renren.entity.ObjectCommodityInfo;
+import io.renren.entity.*;
 import io.renren.service.ProductionService;
 import io.renren.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 〈一句话功能简述〉<br> 
@@ -55,5 +54,45 @@ public class ProductionServiceImpl implements ProductionService {
     @Override
     public List<CommodityVersion> getCommodityVersion(String commodityId) {
         return productionDao.getCommodityVersion(commodityId);
+    }
+
+    @Override
+    public void insertShoppingCar(ShoppingCar shoppingCar) {
+        productionDao.insertShoppingCar(shoppingCar);
+    }
+
+    @Override
+    public Map<String, Object> isExistCarProduction(String commodityId, String skuId, String colorId) {
+        ShoppingCar production = productionDao.isExistCarProduction(commodityId, skuId, colorId);
+        Map<String,Object> map = new HashMap<String, Object>();
+        boolean flag  = true;
+        if(production == null){
+            flag = false;
+        }else{
+            map.put("skuNumber",production.getSkuNumber());
+            map.put("totalPrice",production.getTotalPrice());
+        }
+        map.put("flag",flag);
+        return map;
+    }
+
+    @Override
+    public void updateCarProduction(ShoppingCar shoppingCar) {
+        productionDao.updateCarProduction(shoppingCar);
+    }
+
+    @Override
+    public List<ObjectShoppingCar> getShoppingCar(Long userId) {
+        return productionDao.getShoppingCar(userId);
+    }
+
+    @Override
+    public void deleteShoppingCar(String id) {
+        productionDao.deleteShoppingCar(id);
+    }
+
+    @Override
+    public void changeCarStatus(String id, String isChoose) {
+        productionDao.changeCarStatus(id,isChoose);
     }
 }

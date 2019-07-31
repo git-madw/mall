@@ -62,4 +62,137 @@
             </if>
         </where>
     </select>
+    <insert id="insertShoppingCar" parameterType="io.renren.entity.ShoppingCar">
+        INSERT INTO c_shoppingcar
+        (id,skuName,skuPrice,skuNumber,totalPrice,userId,commodityId,date,skuId,commodityPicture,isChoose,
+        inStockAddress,color)
+        VALUES (
+            #{shoppingCar.id},
+        <if test=" shoppingCar.skuName != null and shoppingCar.skuName != ''">
+            #{shoppingCar.skuName},
+        </if>
+        <if test="shoppingCar.skuPrice != null">
+            #{shoppingCar.skuPrice},
+        </if>
+        <if test="shoppingCar.skuNumber != null">
+            #{shoppingCar.skuNumber},
+        </if>
+        <if test="shoppingCar.totalPrice != null">
+            #{shoppingCar.totalPrice},
+        </if>
+        <if test="shoppingCar.userId != null and shoppingCar.userId != ''">
+            #{shoppingCar.userId},
+        </if>
+        <if test="shoppingCar.commodityId != null and shoppingCar.commodityId != ''">
+            #{shoppingCar.commodityId},
+        </if>
+            #{shoppingCar.date},
+        <if test="shoppingCar.skuId != null and shoppingCar.skuId != ''">
+            #{shoppingCar.skuId},
+        </if>
+        <if test="shoppingCar.commodityPicture != null and shoppingCar.commodityPicture != ''">
+            #{shoppingCar.commodityPicture},
+        </if>
+        <if test=" shoppingCar.isChoose != null and shoppingCar.isChoose != ''">
+            #{shoppingCar.isChoose},
+        </if>
+        <if test=" shoppingCar.inStockAddress != null and shoppingCar.inStockAddress != ''">
+            #{shoppingCar.inStockAddress},
+        </if>
+        <if test="shoppingCar.color != null and shoppingCar.color != ''">
+            #{shoppingCar.color}
+        </if>
+        )
+    </insert>
+    <select id="isExistCarProduction" parameterType="String" resultType="io.renren.entity.ShoppingCar">
+        SELECT * FROM c_shoppingcar
+        <where>
+            <if test="commodityId != null and commodityId != ''">
+                commodityId = #{commodityId}
+            </if>
+            <if test="skuId != null and skuId != ''">
+                AND skuId = #{skuId}
+            </if>
+            <if test="colorId != null and colorId != ''">
+                AND color = #{colorId}
+            </if>
+        </where>
+    </select>
+    <update id="updateCarProduction" parameterType="io.renren.entity.ShoppingCar">
+        UPDATE c_shoppingcar SET
+        <if test="shoppingCar.skuNumber != null">
+            skuNumber = #{shoppingCar.skuNumber},
+        </if>
+        <if test="shoppingCar.totalPrice != null">
+            totalPrice = #{shoppingCar.totalPrice}
+        </if>
+        <where>
+            <if test="shoppingCar.commodityId != null and shoppingCar.commodityId != ''">
+                commodityId = #{shoppingCar.commodityId}
+            </if>
+            <if test="shoppingCar.skuId != null and shoppingCar.skuId != ''">
+                AND skuId = #{shoppingCar.skuId}
+            </if>
+            <if test="shoppingCar.color != null and shoppingCar.color != ''">
+                AND color = #{shoppingCar.color}
+            </if>
+        </where>
+    </update>
+    <resultMap id="objectShoppingCar" type="io.renren.entity.ObjectShoppingCar">
+        <result column="id" property="id" />
+        <result column="skuName" property="skuName" />
+        <result column="skuPrice" property="skuPrice" />
+        <result column="skuNumber" property="skuNumber" />
+        <result column="totalPrice" property="totalPrice" />
+        <result column="userId" property="userId" />
+        <result column="commodityId" property="commodityId" />
+        <result column="skuId" property="skuId" />
+        <result column="isChoose" property="isChoose" />
+        <result column="commodityPicture" property="commodityPicture" />
+        <result column="inStockAddress" property="inStockAddress" />
+        <result column="color" property="color" />
+        <result column="date" property="date" />
+        <association property="commodityColor" javaType="io.renren.entity.CommodityColor">
+            <result column="cId" property="id" />
+            <result column="coCommodityId" property="commodityId" />
+            <result column="commodityColor" property="commodityColor" />
+            <result column="isUse" property="isUse" />
+            <result column="cDate" property="date" />
+            <result column="url" property="url" />
+        </association>
+        <association property="sku" javaType="io.renren.entity.Sku">
+            <result column="sId" property="id" />
+            <result column="sCommodityId" property="commodityId" />
+            <result column="inStock" property="inStock" />
+            <result column="price" property="price" />
+            <result column="sSkuName" property="skuName" />
+            <result column="skuSalesVolume" property="skuSalesVolume" />
+            <result column="sInStockAddress" property="inStockAddress" />
+            <result column="sDate" property="date" />
+        </association>
+    </resultMap>
+    <select id="getShoppingCar" resultMap="objectShoppingCar">
+        SELECT c_shoppingcar.*,c_commodity_color.id AS cId,c_commodity_color.commodityId
+        AS coCommodityId,c_commodity_color.commodityColor,c_commodity_color.isUse,
+        c_commodity_color.date AS cDate,c_commodity_color.url,c_sku.id AS sId,
+        c_sku.commodityId AS sCommodityId,c_sku.inStock,c_sku.price,
+        c_sku.skuName AS sSkuName,c_sku.skuSalesVolume,c_sku.inStockAddress AS sInStockAddress,
+        c_sku.date AS sDate
+        FROM c_shoppingcar LEFT JOIN c_commodity_color ON c_shoppingcar.color =
+        c_commodity_color.id
+        LEFT JOIN c_sku ON c_shoppingcar.skuId = c_sku.id
+        <where>
+            <if test="userId != null and userId != ''">
+                c_shoppingcar.userId = #{userId}
+            </if>
+        </where>
+    </select>
+    <delete id="deleteShoppingCar" parameterType="String">
+        DELETE FROM c_shoppingcar
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+        </where>
+    </delete>
 </mapper>

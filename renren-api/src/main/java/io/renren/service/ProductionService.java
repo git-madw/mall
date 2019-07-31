@@ -9,13 +9,11 @@
  */
 package io.renren.service;
 
-import io.renren.entity.CommodityColor;
-import io.renren.entity.CommodityVersion;
-import io.renren.entity.ObjectCommodity;
-import io.renren.entity.ObjectCommodityInfo;
+import io.renren.entity.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 〈一句话功能简述〉<br> 
@@ -50,4 +48,28 @@ public interface ProductionService {
      * @Date: 2019/7/30 20:58
      */
     List<CommodityVersion> getCommodityVersion(String commodityId);
+    /**
+     * 商品存入购物车
+     */
+    void insertShoppingCar(ShoppingCar shoppingCar);
+    /**
+     * 判断商品是否在购物车中已经存在
+     */
+    Map<String,Object> isExistCarProduction(String commodityId,String skuId,String colorId);
+    /**
+     * 更新购物车商品信息
+     */
+    void updateCarProduction(ShoppingCar shoppingCar);
+    /**
+     * 用户获取购物车中的商品
+     */
+    List<ObjectShoppingCar> getShoppingCar(Long userId);
+    /**
+     * 根据id删除购物车商品
+     */
+    void deleteShoppingCar(String id);
+    /**
+     * 更改商品选中状态
+     */
+    void changeCarStatus(String id,String isChoose);
 }
