@@ -80,4 +80,33 @@ public interface ProductionService {
      * 删除用户购物车中的所有商品
      */
     void deleteCarProductions(Long userId);
+    /**
+     * 用户获取购物车中已经选中的商品生成订单
+     */
+    List<ObjectShoppingCar> getIsChooseShoppingCar(Long userId);
+    /**
+     * 保存或更新用户收获地址信息
+     */
+    void saveAddress(Address address);
+    /**
+     * 判断当前收获地址是否存在
+     */
+    Address isExistAddress(String id);
+    /**
+     * 更新用户的收获地址
+     */
+    void updateAddress(Address address);
+    /**
+     * 更改收货地址的默认状态
+     */
+    void updateState(String id,Long userId);
+    /**
+     * 获取用户的默认的收获地址
+     */
+    Address getDefaultAddress(Long userId);
+    /**
+     * 获取用户的所有的收获地址
+     */
+    List<Address> getAddress(Long userId);
+
 }

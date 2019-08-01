@@ -105,4 +105,39 @@ public class ProductionServiceImpl implements ProductionService {
     public void deleteCarProductions(Long userId) {
         productionDao.deleteCarProductions(userId);
     }
+
+    @Override
+    public List<ObjectShoppingCar> getIsChooseShoppingCar(Long userId) {
+        return productionDao.getIsChooseShoppingCar(userId);
+    }
+
+    @Override
+    public void saveAddress(Address address) {
+        productionDao.saveAddress(address);
+    }
+
+    @Override
+    public Address isExistAddress(String id) {
+        return productionDao.isExistAddress(id);
+    }
+
+    @Override
+    public void updateAddress(Address address) {
+        productionDao.updateAddress(address);
+    }
+
+    @Override
+    public void updateState(String id, Long userId) {
+        productionDao.updateState(id,userId);
+    }
+
+    @Override
+    public Address getDefaultAddress(Long userId) {
+        return productionDao.getDefaultAddress(userId);
+    }
+
+    @Override
+    public List<Address> getAddress(Long userId) {
+        return productionDao.getAddress(userId);
+    }
 }

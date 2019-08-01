@@ -195,4 +195,144 @@
             </if>
         </where>
     </delete>
+    <select id="getIsChooseShoppingCar" resultMap="objectShoppingCar">
+        SELECT c_shoppingcar.*,c_commodity_color.id AS cId,c_commodity_color.commodityId
+        AS coCommodityId,c_commodity_color.commodityColor,c_commodity_color.isUse,
+        c_commodity_color.date AS cDate,c_commodity_color.url,c_sku.id AS sId,
+        c_sku.commodityId AS sCommodityId,c_sku.inStock,c_sku.price,
+        c_sku.skuName AS sSkuName,c_sku.skuSalesVolume,c_sku.inStockAddress AS sInStockAddress,
+        c_sku.date AS sDate
+        FROM c_shoppingcar LEFT JOIN c_commodity_color ON c_shoppingcar.color =
+        c_commodity_color.id
+        LEFT JOIN c_sku ON c_shoppingcar.skuId = c_sku.id
+        <where>
+            c_shoppingcar.isChoose = "0"
+            <if test="userId != null and userId != ''">
+                AND c_shoppingcar.userId = #{userId}
+            </if>
+        </where>
+    </select>
+    <update id="changeCarStatus" parameterType="String">
+        UPDATE c_shoppingcar SET
+        <if test="isChoose != null and isChoose != ''">
+            isChoose = #{isChoose}
+        </if>
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+        </where>
+    </update>
+    <update id="changeCarNumber" parameterType="io.renren.entity.ShoppingCar">
+        UPDATE c_shoppingcar SET
+        <if test="shoppingCar.skuNumber != null">
+            skuNumber = #{shoppingCar.skuNumber},
+        </if>
+        <if test="shoppingCar.totalPrice != null">
+            totalPrice = #{shoppingCar.totalPrice}
+        </if>
+        <where>
+            <if test="shoppingCar.id != null and shoppingCar.id != ''">
+                id = #{shoppingCar.id}
+            </if>
+        </where>
+    </update>
+    <delete id="deleteCarProductions" parameterType="Long">
+        DELETE FROM c_shoppingCar
+        <where>
+            <if test="userId != null and userId != ''">
+                userId = #{userId}
+            </if>
+        </where>
+    </delete>
+    <select id="isExistAddress" parameterType="String" resultType="io.renren.entity.Address">
+        SELECT * FROM address
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+        </where>
+    </select>
+    <insert id="saveAddress" parameterType="io.renren.entity.Address">
+        INSERT INTO address
+        (id,userAddress,detailAddress,addressStatus,userId,name,tel)
+        VALUES (
+        <if test="address.id != null and address.id != ''">
+            #{address.id},
+        </if>
+        <if test="address.userAddress != null and address.userAddress != ''">
+            #{address.userAddress},
+        </if>
+        <if test="address.detailAddress != null and address.detailAddress != ''">
+            #{address.detailAddress},
+        </if>
+        <if test="address.addressStatus != null">
+            #{address.addressStatus},
+        </if>
+        <if test="address.userId != null and address.userId != ''">
+            #{address.userId},
+        </if>
+        <if test="address.name != null and address.name != ''">
+            #{address.name},
+        </if>
+        <if test="address.tel != null and address.tel != ''">
+            #{address.tel}
+        </if>
+        )
+    </insert>
+    <update id="updateAddress" parameterType="io.renren.entity.Address">
+        UPDATE address SET
+        <if test="address.userAddress != null and address.userAddress != ''">
+            userAddress = #{address.userAddress},
+        </if>
+        <if test="address.detailAddress != null and address.detailAddress != ''">
+            detailAddress = #{address.detailAddress},
+        </if>
+        <if test="address.addressStatus != null">
+            addressStatus = #{address.addressStatus},
+        </if>
+        <if test="address.userId != null and address.userId != ''">
+            userId = #{address.userId},
+        </if>
+        <if test="address.name != null and address.name != ''">
+            name = #{address.name},
+        </if>
+        <if test="address.tel != null and address.tel != ''">
+            tel = #{address.tel}
+        </if>
+        <where>
+            <if test="address.id != null and address.id !=''">
+                id = #{address.id}
+            </if>
+        </where>
+    </update>
+    <update id="updateState">
+        UPDATE address SET
+        addressStatus = 1
+        <where>
+            <if test="id != null and id != ''">
+                id != #{id}
+            </if>
+            <if test="userId != null">
+                AND userId = #{userId}
+            </if>
+        </where>
+    </update>
+    <select id="getDefaultAddress" parameterType="Long" resultType="io.renren.entity.Address">
+        SELECT * FROM address
+        <where>
+                addressStatus = 0
+            <if test="userId != null">
+                AND userId = #{userId}
+            </if>
+        </where>
+    </select>
+    <select id="getAddress" parameterType="Long" resultType="io.renren.entity.Address">
+        SELECT * FROM address
+        <where>
+            <if test="userId != null">
+                userId = #{userId}
+            </if>
+        </where>
+    </select>
 </mapper>

@@ -162,4 +162,61 @@ public class ProductionController {
         productionService.deleteCarProductions(shoppingCar.getUserId());
         return new Result().success();
     }
+    /**
+     * 用户获取购物车中已经选中的商品生成订单
+     */
+    @Login
+    @RequestMapping(value = "getIsChooseShoppingCar")
+    @ResponseBody
+    public Object getIsChooseShoppingCar(@RequestBody UserEntity entity){
+        List<ObjectShoppingCar> shoppingCar = productionService.getIsChooseShoppingCar(entity.getId());
+        return new Result().ok(shoppingCar);
+    }
+
+    /**
+     * 用户的收货地址操作
+     * @param address
+     * @return
+     */
+    @Login
+    @RequestMapping(value = "saveAddress")
+    @ResponseBody
+    public Object saveAddress(@RequestBody Address address){
+        Address currentAddress = productionService.isExistAddress(address.getId());
+        if(address.getAddressStatus() == 0){
+            productionService.updateState(address.getId(),address.getUserId());
+        }
+        if(currentAddress == null){
+            productionService.saveAddress(address);
+        }else{
+            productionService.updateAddress(address);
+        }
+        return new Result().success();
+    }
+
+    /**
+     * 获取用户默认的收货地址
+     * @param entity
+     * @return
+     */
+    @Login
+    @RequestMapping(value = "getDefaultAddress")
+    @ResponseBody
+    public Object getDefaultAddress(@RequestBody UserEntity entity){
+        Address address = productionService.getDefaultAddress(entity.getId());
+        return new Result().ok(address);
+    }
+
+    /**
+     *  获取用户的所有收获地址
+     * @param entity
+     * @return
+     */
+    @Login
+    @RequestMapping(value = "getAddress")
+    @ResponseBody
+    public Object getAddress(@RequestBody UserEntity entity){
+        List<Address> address = productionService.getAddress(entity.getId());
+        return new Result().ok(address);
+    }
 }
