@@ -98,6 +98,10 @@ public interface Constant {
      * 邮件配置KEY
      */
     String MAIL_CONFIG_KEY = "MAIL_CONFIG_KEY";
+    /**
+     * 图片地址
+     */
+    String IMGPATH = "/data/images";
 
     /**
      * 定时任务状态

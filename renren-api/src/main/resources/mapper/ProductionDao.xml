@@ -180,7 +180,7 @@
         c_sku.date AS sDate
         FROM c_shoppingcar LEFT JOIN c_commodity_color ON c_shoppingcar.color =
         c_commodity_color.id
-        LEFT JOIN c_sku ON c_shoppingcar.skuId = c_sku.id
+        JOIN c_sku ON c_shoppingcar.skuId = c_sku.id
         <where>
             <if test="userId != null and userId != ''">
                 c_shoppingcar.userId = #{userId}
