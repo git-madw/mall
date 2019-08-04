@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.instock.dao.CSkuDao">
+
+    <resultMap type="io.renren.modules.instock.entity.CSkuEntity" id="cSkuMap">
+        <result property="id" column="id"/>
+        <result property="commodityid" column="commodityId"/>
+        <result property="instock" column="inStock"/>
+        <result property="price" column="price"/>
+        <result property="date" column="date"/>
+        <result property="skuname" column="skuName"/>
+        <result property="skusalesvolume" column="skuSalesVolume"/>
+        <result property="instockaddress" column="inStockAddress"/>
+    </resultMap>
+</mapper>

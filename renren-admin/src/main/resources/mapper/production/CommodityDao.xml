@@ -14,5 +14,59 @@
         <result property="description" column="description"/>
     </resultMap>
 
+    <insert id="saveLbPicture" parameterType="io.renren.modules.production.entity.CCommodityLbEntity">
+        INSERT INTO c_commodity_lb
+        (id,commodityId,url,create_date)
+        VALUES(
+        <if test="entity.id != null">
+            #{entity.id},
+        </if>
+        <if test="entity.commodityid != null">
+            #{entity.commodityid},
+        </if>
+        <if test="entity.url != null and entity.url != ''">
+            #{entity.url},
+        </if>
+            #{entity.createDate}
+        )
+    </insert>
 
+    <select id="getLbCommodity" parameterType="Long" resultType="io.renren.modules.production.dto.CCommodityLbDTO">
+        SELECT * FROM c_commodity_lb
+        <where>
+            <if test="id != null">
+                commodityId = #{id}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteLb" parameterType="Long">
+        DELETE FROM c_commodity_lb
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+        </where>
+    </delete>
+
+    <update id="updateLb" parameterType="io.renren.modules.production.dto.CCommodityLbDTO">
+        UPDATE c_commodity_lb SET (
+        <if test="dto.url != null and dto.url != ''">
+            url = #{dto.url}
+        </if>
+        )
+        <where>
+            <if test="dto.id != null">
+                id = #{dto.url}
+            </if>
+        </where>
+    </update>
+    <select id="queryCommodity" parameterType="String" resultType="io.renren.modules.production.dto.CommodityDTO">
+        SELECT * FROM commodity
+        <where>
+            <if test="key != null and key != ''">
+                commodityName LIKE CONCAT(CONCAT('%',#{key},'%'))
+            </if>
+        </where>
+    </select>
 </mapper>

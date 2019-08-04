@@ -1,34 +1,42 @@
 package io.renren.common.utils;
 
 import io.renren.common.constant.Constant;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 图片上传工具类
  */
 public class UploadUtils {
 
-    public static Map<String,Object> ImgUpload(MultipartHttpServletRequest multiReq) throws IOException {
-        FileOutputStream fos = new FileOutputStream(
-                new File(Constant.IMGPATH));
-        FileInputStream fs = (FileInputStream) multiReq.getFile("img").getInputStream();
-        byte[] buffer = new byte[1024];
-        int len = 0;
-        while ((len = fs.read(buffer)) != -1) {
-            fos.write(buffer, 0, len);
+    public static Map<String,Object> ImgUpload(MultipartFile file) throws IOException {
+        // 生成一个文件名16位数字+字母
+        String fileRandomName = UUID.randomUUID().toString().replaceAll("-", "").toLowerCase();
+        String realName = file.getOriginalFilename();
+        String suffixName = realName.substring(realName.lastIndexOf("."));
+        fileRandomName += suffixName;
+        File tempFile = new File(Constant.IMGPATH, fileRandomName);
+        if (!tempFile.getParentFile().exists()) {
+            tempFile.getParentFile().mkdirs();
         }
-        fos.close();
-        Map<String ,Object> map=new HashMap<>();
-        map.put("code",200);
-        map.put("msg","上传成功");
-        map.put("url","http://localhost:8080/tomcat.png");
+        if (tempFile.exists()) {
+            tempFile.delete();
+        }
+        try {
+            tempFile.createNewFile();
+            file.transferTo(tempFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // 封装文件的信息
+        Map<String,Object> map = new HashMap<>();
+        map.put("url",Constant.MVCPATH + fileRandomName);
         return map;
     }
 }

@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -43,5 +44,6 @@ public class CommodityDTO implements Serializable {
 	@ApiModelProperty(value = "商品描述")
 	private String description;
 
+	private List<CCommodityLbDTO> dtos;
 
 }

@@ -8,6 +8,8 @@
 
 package io.renren.common.constant;
 
+import io.lettuce.core.dynamic.annotation.Value;
+
 /**
  * 常量
  *
@@ -101,8 +103,11 @@ public interface Constant {
     /**
      * 图片地址
      */
-    String IMGPATH = "/data/images";
-
+    String IMGPATH = "E:\\data\\images\\";
+    /**
+     * 映射地址
+     */
+    String MVCPATH = "/renren-admin/uploadImages/";
     /**
      * 定时任务状态
      */
