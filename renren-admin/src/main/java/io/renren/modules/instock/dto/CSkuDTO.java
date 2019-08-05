@@ -46,5 +46,5 @@ public class CSkuDTO implements Serializable {
 	@ApiModelProperty(value = "库存地址")
 	private String instockaddress;
 
-	private List<CSkuColorPriceDTO> dto;
+	private List<CCommodityMemberDTO> dtos;
 }

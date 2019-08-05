@@ -38,7 +38,7 @@ public interface ProductionService {
      * @Author: dinggc
      * @Date: 2019/7/30 20:58
      */
-    List<CommodityColor> getCommodityColor(String commodityId);
+    List<CommodityColor> getCommodityColor(Long commodityId);
     /**
      * 功能描述: <br>
      * 〈获取商品的版本〉
@@ -47,7 +47,7 @@ public interface ProductionService {
      * @Author: dinggc
      * @Date: 2019/7/30 20:58
      */
-    List<CommodityVersion> getCommodityVersion(String commodityId);
+    List<CommodityVersion> getCommodityVersion(Long commodityId);
     /**
      * 商品存入购物车
      */
@@ -55,7 +55,7 @@ public interface ProductionService {
     /**
      * 判断商品是否在购物车中已经存在
      */
-    Map<String,Object> isExistCarProduction(String commodityId,String skuId,String colorId);
+    Map<String,Object> isExistCarProduction(Long commodityId,Long skuId,Long colorId);
     /**
      * 更新购物车商品信息
      */
@@ -67,11 +67,11 @@ public interface ProductionService {
     /**
      * 根据id删除购物车商品
      */
-    void deleteShoppingCar(String id);
+    void deleteShoppingCar(Long id);
     /**
      * 更改商品选中状态
      */
-    void changeCarStatus(String id,String isChoose);
+    void changeCarStatus(Long id,String isChoose);
     /**
      * 更改商品选中数量
      */
@@ -91,7 +91,7 @@ public interface ProductionService {
     /**
      * 判断当前收获地址是否存在
      */
-    Address isExistAddress(String id);
+    Address isExistAddress(Long id);
     /**
      * 更新用户的收获地址
      */
@@ -99,7 +99,7 @@ public interface ProductionService {
     /**
      * 更改收货地址的默认状态
      */
-    void updateState(String id,Long userId);
+    void updateState(Long id,Long userId);
     /**
      * 获取用户的默认的收获地址
      */

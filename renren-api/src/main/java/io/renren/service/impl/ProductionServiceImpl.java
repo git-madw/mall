@@ -47,12 +47,12 @@ public class ProductionServiceImpl implements ProductionService {
     }
 
     @Override
-    public List<CommodityColor> getCommodityColor(String commodityId) {
+    public List<CommodityColor> getCommodityColor(Long commodityId) {
         return productionDao.getCommodityColor(commodityId);
     }
 
     @Override
-    public List<CommodityVersion> getCommodityVersion(String commodityId) {
+    public List<CommodityVersion> getCommodityVersion(Long commodityId) {
         return productionDao.getCommodityVersion(commodityId);
     }
 
@@ -62,7 +62,7 @@ public class ProductionServiceImpl implements ProductionService {
     }
 
     @Override
-    public Map<String, Object> isExistCarProduction(String commodityId, String skuId, String colorId) {
+    public Map<String, Object> isExistCarProduction(Long commodityId, Long skuId, Long colorId) {
         ShoppingCar production = productionDao.isExistCarProduction(commodityId, skuId, colorId);
         Map<String,Object> map = new HashMap<String, Object>();
         boolean flag  = true;
@@ -87,12 +87,12 @@ public class ProductionServiceImpl implements ProductionService {
     }
 
     @Override
-    public void deleteShoppingCar(String id) {
+    public void deleteShoppingCar(Long id) {
         productionDao.deleteShoppingCar(id);
     }
 
     @Override
-    public void changeCarStatus(String id, String isChoose) {
+    public void changeCarStatus(Long id, String isChoose) {
         productionDao.changeCarStatus(id,isChoose);
     }
 
@@ -117,7 +117,7 @@ public class ProductionServiceImpl implements ProductionService {
     }
 
     @Override
-    public Address isExistAddress(String id) {
+    public Address isExistAddress(Long id) {
         return productionDao.isExistAddress(id);
     }
 
@@ -127,7 +127,7 @@ public class ProductionServiceImpl implements ProductionService {
     }
 
     @Override
-    public void updateState(String id, Long userId) {
+    public void updateState(Long id, Long userId) {
         productionDao.updateState(id,userId);
     }
 

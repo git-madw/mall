@@ -11,8 +11,8 @@ import java.util.Date;
 public class Commodity extends BaseEntity{
     private String commodityName;
     private String commodityPicture;
-    private String classificationFirstId;
-    private String classificationSecondId;
+    private Long classificationFirstId;
+    private Long classificationSecondId;
     private String brandId;
     private Date date;
     private String description;
@@ -33,19 +33,19 @@ public class Commodity extends BaseEntity{
         this.commodityPicture = commodityPicture;
     }
 
-    public String getClassificationFirstId() {
+    public Long getClassificationFirstId() {
         return classificationFirstId;
     }
 
-    public void setClassificationFirstId(String classificationFirstId) {
+    public void setClassificationFirstId(Long classificationFirstId) {
         this.classificationFirstId = classificationFirstId;
     }
 
-    public String getClassificationSecondId() {
+    public Long getClassificationSecondId() {
         return classificationSecondId;
     }
 
-    public void setClassificationSecondId(String classificationSecondId) {
+    public void setClassificationSecondId(Long classificationSecondId) {
         this.classificationSecondId = classificationSecondId;
     }
 

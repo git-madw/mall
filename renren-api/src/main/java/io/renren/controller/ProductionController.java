@@ -57,7 +57,8 @@ public class ProductionController {
             productions = productionService.getProductions(userEntity.getId());
         }
         for(ObjectCommodity commodity : productions){
-            String commodityId = commodity.getId();
+            //commodity.setDescription(commodity.getDescription().replace("\"", "\'\\"));
+            Long commodityId = commodity.getId();
             List<CommodityColor> commodityColor = productionService.getCommodityColor(commodityId);
             List<CommodityVersion> commodityVersion = productionService.getCommodityVersion(commodityId);
             ObjectCommodityInfo info = new ObjectCommodityInfo();

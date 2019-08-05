@@ -17,7 +17,7 @@ import java.util.Date;
  * @since 1.0.0
  */
 public class Sku extends BaseEntity{
-    private String commodityId;
+    private Long commodityId;
     private int inStock;
     private BigDecimal price;
     private String skuName;
@@ -25,11 +25,11 @@ public class Sku extends BaseEntity{
     private String inStockAddress;
     private Date date;
 
-    public String getCommodityId() {
+    public Long getCommodityId() {
         return commodityId;
     }
 
-    public void setCommodityId(String commodityId) {
+    public void setCommodityId(Long commodityId) {
         this.commodityId = commodityId;
     }
 

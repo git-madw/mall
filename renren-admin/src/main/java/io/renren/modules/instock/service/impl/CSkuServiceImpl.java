@@ -3,6 +3,7 @@ package io.renren.modules.instock.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.renren.common.service.impl.CrudServiceImpl;
 import io.renren.modules.instock.dao.CSkuDao;
+import io.renren.modules.instock.dto.CCommodityMemberDTO;
 import io.renren.modules.instock.dto.CSkuDTO;
 import io.renren.modules.instock.entity.CSkuEntity;
 import io.renren.modules.instock.service.CSkuService;
@@ -10,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,4 +36,28 @@ public class CSkuServiceImpl extends CrudServiceImpl<CSkuDao, CSkuEntity, CSkuDT
         return wrapper;
     }
 
+    @Override
+    public void saveMemberPrice(CCommodityMemberDTO dto) {
+        dao.saveMemberPrice(dto);
+    }
+
+    @Override
+    public List<CCommodityMemberDTO> getMemberInfo(Long commodityId) {
+        return dao.getMemberInfo(commodityId);
+    }
+
+    @Override
+    public void updateMemberInfo(CCommodityMemberDTO dto) {
+        dao.updateMemberInfo(dto);
+    }
+
+    @Override
+    public Long getCommodityIdById(Long id) {
+        return dao.getCommodityIdById(id);
+    }
+
+    @Override
+    public void deleteMemberInfo(Long commodityId) {
+        dao.deleteMemberInfo(commodityId);
+    }
 }

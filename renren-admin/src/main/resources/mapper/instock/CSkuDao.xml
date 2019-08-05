@@ -13,4 +13,68 @@
         <result property="skusalesvolume" column="skuSalesVolume"/>
         <result property="instockaddress" column="inStockAddress"/>
     </resultMap>
+
+    <insert id="saveMemberPrice" parameterType="io.renren.modules.instock.dto.CCommodityMemberDTO">
+        INSERT INTO c_commodity_member
+        (id,memberId,commodityId,number,price,create_date)
+        VALUES (
+        <if test="dto.id != null">
+            #{dto.id},
+        </if>
+        <if test="dto.memberid != null">
+            #{dto.memberid},
+        </if>
+        <if test="dto.commodityid != null">
+            #{dto.commodityid},
+        </if>
+        <if test="dto.number != null">
+            #{dto.number},
+        </if>
+        <if test="dto.price != null">
+            #{dto.price},
+        </if>
+            #{dto.createDate}
+        )
+    </insert>
+
+    <select id="getMemberInfo" parameterType="Long" resultType="io.renren.modules.instock.dto.CCommodityMemberDTO">
+        SELECT * FROM c_commodity_member
+        JOIN user_member ON c_commodity_member.memberId = user_member.id
+        <where>
+            <if test="commodityId != null">
+                c_commodity_member.commodityId = #{commodityId}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateMemberInfo" parameterType="io.renren.modules.instock.dto.CCommodityMemberDTO">
+        UPDATE c_commodity_member SET
+          <if test="dto.number != null">
+              number = #{dto.number},
+          </if>
+          <if test="dto.price != null">
+              price = #{dto.price}
+          </if>
+        <where>
+            <if test="dto.id != null">
+                id = #{dto.id}
+            </if>
+        </where>
+    </update>
+    <select id="getCommodityIdById" parameterType="Long" resultType="Long">
+        SELECT commodityId FROM c_sku
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+        </where>
+    </select>
+    <delete id="deleteMemberInfo" parameterType="Long">
+        DELETE FROM c_commodity_member
+        <where>
+            <if test="commodityId != null">
+                commodityId = #{commodityId}
+            </if>
+        </where>
+    </delete>
 </mapper>

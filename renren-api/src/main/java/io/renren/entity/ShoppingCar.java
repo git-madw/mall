@@ -34,11 +34,11 @@ public class ShoppingCar extends BaseEntity{
     /**
      * 商品id
      */
-    private String commodityId;
+    private Long commodityId;
     /**
      * skuId
      */
-    private String skuId;
+    private Long skuId;
     /**
      * 是否选中
      */
@@ -54,7 +54,7 @@ public class ShoppingCar extends BaseEntity{
      * 库存地址
      */
     private String inStockAddress;
-    private String color;
+    private Long color;
     /**
      * 时间
      * @return
@@ -85,27 +85,27 @@ public class ShoppingCar extends BaseEntity{
         this.skuPrice = skuPrice;
     }
 
-    public String getCommodityId() {
+    public Long getCommodityId() {
         return commodityId;
     }
 
-    public void setCommodityId(String commodityId) {
+    public void setCommodityId(Long commodityId) {
         this.commodityId = commodityId;
     }
 
-    public String getSkuId() {
+    public Long getSkuId() {
         return skuId;
     }
 
-    public void setSkuId(String skuId) {
+    public void setSkuId(Long skuId) {
         this.skuId = skuId;
     }
 
-    public String getColor() {
+    public Long getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(Long color) {
         this.color = color;
     }
 

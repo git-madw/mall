@@ -1,4 +1,4 @@
-package io.renren.modules.instock.controller;
+package io.renren.modules.sys.controller;
 
 import io.renren.common.annotation.LogOperation;
 import io.renren.common.constant.Constant;
@@ -11,10 +11,10 @@ import io.renren.common.validator.ValidatorUtils;
 import io.renren.common.validator.group.AddGroup;
 import io.renren.common.validator.group.DefaultGroup;
 import io.renren.common.validator.group.UpdateGroup;
-import io.renren.modules.instock.dto.CCommodityMemberDTO;
-import io.renren.modules.instock.dto.CSkuDTO;
-import io.renren.modules.instock.excel.CSkuExcel;
-import io.renren.modules.instock.service.CSkuService;
+import io.renren.modules.production.dto.CommodityDTO;
+import io.renren.modules.sys.dto.UserMemberDTO;
+import io.renren.modules.sys.excel.UserMemberExcel;
+import io.renren.modules.sys.service.UserMemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -32,17 +32,17 @@ import java.util.Map;
 
 
 /**
- * sku库存表
+ * 
  *
  * @author Mark sunlightcs@gmail.com
- * @since 1.0.0 2019-08-04
+ * @since 1.0.0 2019-08-05
  */
 @RestController
-@RequestMapping("demo/csku")
-@Api(tags="sku库存表")
-public class CSkuController {
+@RequestMapping("demo/usermember")
+@Api(tags="")
+public class UserMemberController {
     @Autowired
-    private CSkuService cSkuService;
+    private UserMemberService userMemberService;
 
     @GetMapping("page")
     @ApiOperation("分页")
@@ -52,78 +52,86 @@ public class CSkuController {
         @ApiImplicitParam(name = Constant.ORDER_FIELD, value = "排序字段", paramType = "query", dataType="String") ,
         @ApiImplicitParam(name = Constant.ORDER, value = "排序方式，可选值(asc、desc)", paramType = "query", dataType="String")
     })
-    @RequiresPermissions("instock:sku:page")
-    public Result<PageData<CSkuDTO>> page(@ApiIgnore @RequestParam Map<String, Object> params){
-        PageData<CSkuDTO> page = cSkuService.page(params);
+    @RequiresPermissions("sys:member:page")
+    public Result<PageData<UserMemberDTO>> page(@ApiIgnore @RequestParam Map<String, Object> params){
+        PageData<UserMemberDTO> page = userMemberService.page(params);
 
-        return new Result<PageData<CSkuDTO>>().ok(page);
+        return new Result<PageData<UserMemberDTO>>().ok(page);
+    }
+
+    @PostMapping("getMembers")
+    @ApiOperation("获取所有的会员信息")
+    @RequiresPermissions("sys:member:info")
+    public Result<List<UserMemberDTO>> getMembers(){
+        List<UserMemberDTO> members = userMemberService.getMembers();
+        return new Result<List<UserMemberDTO>>().ok(members);
+    }
+
+    @PostMapping("saveMember")
+    @ApiOperation("保存商品的会员等级信息")
+    @RequiresPermissions("sys:member:save")
+    public Result saveMember(@RequestBody List<CommodityDTO> dtos){
+        for(CommodityDTO dto:dtos){
+            SnowFlake snowFlake = new SnowFlake();
+            List<UserMemberDTO> members = dto.getMembers();
+            userMemberService.saveMember(snowFlake.nextId(),dto.getId(),members.get(0).getId(),new Date());
+        }
+        return new Result();
+    }
+
+    @PostMapping("getProductionMember")
+    @ApiOperation("获取商品的会员信息")
+    @RequiresPermissions("sys:member:info")
+    public Result<List<UserMemberDTO>> getProductionMember(HttpServletRequest request){
+        Long id = Long.parseLong(request.getParameter("id"));
+        List<UserMemberDTO> member = userMemberService.getProductionMember(id);
+        return new Result<List<UserMemberDTO>>().ok(member);
     }
 
     @GetMapping("{id}")
     @ApiOperation("信息")
-    @RequiresPermissions("instock:sku:info")
-    public Result<CSkuDTO> get(@PathVariable("id") Long id){
-        CSkuDTO data = cSkuService.get(id);
-        return new Result<CSkuDTO>().ok(data);
-    }
+    @RequiresPermissions("sys:member:info")
+    public Result<UserMemberDTO> get(@PathVariable("id") Long id){
+        UserMemberDTO data = userMemberService.get(id);
 
-    @PostMapping("getMemberInfo")
-    @ApiOperation("获取当前库存的会员等级的数量和价格")
-    @RequiresPermissions("instock:sku:info")
-    public Result<List<CCommodityMemberDTO>> getMemberInfo(HttpServletRequest request){
-        Long id = Long.parseLong(request.getParameter("id"));
-        List<CCommodityMemberDTO> info = cSkuService.getMemberInfo(id);
-        return new Result<List<CCommodityMemberDTO>>().ok(info);
+        return new Result<UserMemberDTO>().ok(data);
     }
 
     @PostMapping
     @ApiOperation("保存")
     @LogOperation("保存")
-    @RequiresPermissions("instock:sku:save")
-    public Result save(@RequestBody CSkuDTO dto){
+    @RequiresPermissions("sys:member:save")
+    public Result save(@RequestBody UserMemberDTO dto){
         //效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
-        dto.setDate(new Date());
-        cSkuService.save(dto);
-        List<CCommodityMemberDTO> dtos = dto.getDtos();
-        for(CCommodityMemberDTO memberDTO : dtos){
-            SnowFlake snowFlake = new SnowFlake();
-            memberDTO.setId(snowFlake.nextId());
-            memberDTO.setCreateDate(new Date());
-            cSkuService.saveMemberPrice(memberDTO);
-        }
+
+        userMemberService.save(dto);
+
         return new Result();
     }
 
     @PutMapping
     @ApiOperation("修改")
     @LogOperation("修改")
-    @RequiresPermissions("instock:sku:update")
-    public Result update(@RequestBody CSkuDTO dto){
+    @RequiresPermissions("sys:member:update")
+    public Result update(@RequestBody UserMemberDTO dto){
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
-        cSkuService.update(dto);
-        List<CCommodityMemberDTO> dtos = dto.getDtos();
-        for(CCommodityMemberDTO memberDTO : dtos){
-            cSkuService.updateMemberInfo(memberDTO);
-        }
+        userMemberService.update(dto);
+
         return new Result();
     }
 
     @DeleteMapping
     @ApiOperation("删除")
     @LogOperation("删除")
-    @RequiresPermissions("instock:sku:delete")
+    @RequiresPermissions("sys:member:delete")
     public Result delete(@RequestBody Long[] ids){
         //效验数据
         AssertUtils.isArrayEmpty(ids, "id");
 
-        cSkuService.delete(ids);
-        for(int i=0;i<ids.length;i++){
-            Long commodityId = cSkuService.getCommodityIdById(ids[i]);
-            cSkuService.deleteMemberInfo(commodityId);
-        }
+        userMemberService.delete(ids);
 
         return new Result();
     }
@@ -131,11 +139,11 @@ public class CSkuController {
     @GetMapping("export")
     @ApiOperation("导出")
     @LogOperation("导出")
-    @RequiresPermissions("instock:sku:export")
+    @RequiresPermissions("sys:member:export")
     public void export(@ApiIgnore @RequestParam Map<String, Object> params, HttpServletResponse response) throws Exception {
-        List<CSkuDTO> list = cSkuService.list(params);
+        List<UserMemberDTO> list = userMemberService.list(params);
 
-        ExcelUtils.exportExcelToTarget(response, null, list, CSkuExcel.class);
+        ExcelUtils.exportExcelToTarget(response, null, list, UserMemberExcel.class);
     }
 
 }

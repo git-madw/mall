@@ -103,7 +103,8 @@ public interface Constant {
     /**
      * 图片地址
      */
-    String IMGPATH = "E:\\data\\images\\";
+    //String IMGPATH = "E:\\data\\images\\";
+    String IMGPATH = "/opt/data/images/";
     /**
      * 映射地址
      */

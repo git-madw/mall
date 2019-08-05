@@ -38,7 +38,7 @@ public interface ProductionDao {
      * @Author: dinggc
      * @Date: 2019/7/30 20:58
      */
-    List<CommodityColor> getCommodityColor(@Param("commodityId") String commodityId);
+    List<CommodityColor> getCommodityColor(@Param("commodityId") Long commodityId);
     /**
      * 功能描述: <br>
      * 〈获取商品的版本〉
@@ -47,7 +47,7 @@ public interface ProductionDao {
      * @Author: dinggc
      * @Date: 2019/7/30 20:58
      */
-    List<CommodityVersion> getCommodityVersion(@Param("commodityId") String commodityId);
+    List<CommodityVersion> getCommodityVersion(@Param("commodityId") Long commodityId);
     /**
      * 商品信息存入购物车
      */
@@ -55,8 +55,8 @@ public interface ProductionDao {
     /**
      * 判断商品是否在购物车中已经存在
      */
-    ShoppingCar isExistCarProduction(@Param("commodityId") String commodityId,@Param("skuId") String skuId,
-                                            @Param("colorId") String colorId);
+    ShoppingCar isExistCarProduction(@Param("commodityId") Long commodityId,@Param("skuId") Long skuId,
+                                            @Param("colorId") Long colorId);
     /**
      * 更新购物车商品信息
      */
@@ -68,11 +68,11 @@ public interface ProductionDao {
     /**
      * 根据id删除购物车商品
      */
-    void deleteShoppingCar(@Param("id") String id);
+    void deleteShoppingCar(@Param("id") Long id);
     /**
      * 更改商品选中状态
      */
-    void changeCarStatus(@Param("id") String id,@Param("isChoose") String isChoose);
+    void changeCarStatus(@Param("id") Long id,@Param("isChoose") String isChoose);
     /**
      * 更改商品选中数量
      */
@@ -92,7 +92,7 @@ public interface ProductionDao {
     /**
      * 判断当前收获地址是否存在
      */
-    Address isExistAddress(@Param("id") String id);
+    Address isExistAddress(@Param("id") Long id);
     /**
      * 更新用户的收获地址
      */
@@ -100,7 +100,7 @@ public interface ProductionDao {
     /**
      * 更改收货地址的默认状态
      */
-    void updateState(@Param("id") String id,@Param("userId") Long userId);
+    void updateState(@Param("id") Long id,@Param("userId") Long userId);
     /**
      * 获取用户的默认的收获地址
      */

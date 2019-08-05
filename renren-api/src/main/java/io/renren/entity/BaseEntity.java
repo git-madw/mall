@@ -15,21 +15,13 @@ public class BaseEntity implements Serializable {
     /**
     * 主键id
     */
-    private String id;
-    public String getId() {
+    private Long id;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
-
-    public BaseEntity(String id) {
-        this.id = id;
-    }
-    public BaseEntity() {
-        UUID uuid = UUID.randomUUID();
-        this.id = uuid.toString().replace("-", "");
-    }
-
 }

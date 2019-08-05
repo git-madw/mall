@@ -16,17 +16,17 @@ import java.util.Date;
  * @since 1.0.0
  */
 public class CommodityColor extends BaseEntity{
-    private String commodityId;
+    private Long commodityId;
     private String commodityColor;
     private int isUse;
     private Date date;
     private String url;
 
-    public String getCommodityId() {
+    public Long getCommodityId() {
         return commodityId;
     }
 
-    public void setCommodityId(String commodityId) {
+    public void setCommodityId(Long commodityId) {
         this.commodityId = commodityId;
     }
 

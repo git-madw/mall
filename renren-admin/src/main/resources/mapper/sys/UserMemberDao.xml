@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.sys.dao.UserMemberDao">
+
+    <resultMap type="io.renren.modules.sys.entity.UserMemberEntity" id="userMemberMap">
+        <result property="id" column="id"/>
+        <result property="grade" column="grade"/>
+        <result property="description" column="description"/>
+        <result property="creator" column="creator"/>
+        <result property="createDate" column="create_date"/>
+    </resultMap>
+
+    <select id="getMembers" resultType="io.renren.modules.sys.dto.UserMemberDTO">
+        SELECT * FROM user_member
+    </select>
+
+    <insert id="saveMember">
+        INSERT INTO user_commodity_member
+        (id,commodityId,memberId,create_date)
+        VALUES (
+        <if test="id != null">
+            #{id},
+        </if>
+        <if test="commodityId != null">
+            #{commodityId},
+        </if>
+        <if test="memberId != null">
+            #{memberId},
+        </if>
+            #{date}
+        )
+    </insert>
+
+    <select id="getProductionMember" parameterType="Long" resultType="io.renren.modules.sys.dto.UserMemberDTO">
+        SELECT * FROM user_member
+        JOIN user_commodity_member ON user_member.id = user_commodity_member.memberId
+        <where>
+            <if test="commodityId != null">
+                user_commodity_member.commodityId = #{commodityId}
+            </if>
+        </where>
+    </select>
+</mapper>

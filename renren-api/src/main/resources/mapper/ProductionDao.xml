@@ -46,18 +46,18 @@
         </if>
     </select>
 
-    <select id="getCommodityColor" resultType="io.renren.entity.CommodityColor" parameterType="String">
+    <select id="getCommodityColor" resultType="io.renren.entity.CommodityColor" parameterType="Long">
         SELECT * FROM c_commodity_color
         <where>
-            <if test="commodityId != null and commodityId != ''">
+            <if test="commodityId != null">
                 c_commodity_color.commodityId = #{commodityId}
             </if>
         </where>
     </select>
-    <select id="getCommodityVersion" resultType="io.renren.entity.CommodityVersion" parameterType="String">
+    <select id="getCommodityVersion" resultType="io.renren.entity.CommodityVersion" parameterType="Long">
         SELECT * FROM c_commodity_version
         <where>
-            <if test="commodityId != null and commodityId != ''">
+            <if test="commodityId != null">
                 c_commodity_version.commodityId = #{commodityId}
             </if>
         </where>
@@ -104,16 +104,16 @@
         </if>
         )
     </insert>
-    <select id="isExistCarProduction" parameterType="String" resultType="io.renren.entity.ShoppingCar">
+    <select id="isExistCarProduction" parameterType="Long" resultType="io.renren.entity.ShoppingCar">
         SELECT * FROM c_shoppingcar
         <where>
-            <if test="commodityId != null and commodityId != ''">
+            <if test="commodityId != null">
                 commodityId = #{commodityId}
             </if>
-            <if test="skuId != null and skuId != ''">
+            <if test="skuId != null">
                 AND skuId = #{skuId}
             </if>
-            <if test="colorId != null and colorId != ''">
+            <if test="colorId != null">
                 AND color = #{colorId}
             </if>
         </where>
@@ -187,10 +187,10 @@
             </if>
         </where>
     </select>
-    <delete id="deleteShoppingCar" parameterType="String">
+    <delete id="deleteShoppingCar" parameterType="Long">
         DELETE FROM c_shoppingcar
         <where>
-            <if test="id != null and id != ''">
+            <if test="id != null">
                 id = #{id}
             </if>
         </where>
@@ -212,13 +212,13 @@
             </if>
         </where>
     </select>
-    <update id="changeCarStatus" parameterType="String">
+    <update id="changeCarStatus" parameterType="Long">
         UPDATE c_shoppingcar SET
         <if test="isChoose != null and isChoose != ''">
             isChoose = #{isChoose}
         </if>
         <where>
-            <if test="id != null and id != ''">
+            <if test="id != null">
                 id = #{id}
             </if>
         </where>
@@ -245,10 +245,10 @@
             </if>
         </where>
     </delete>
-    <select id="isExistAddress" parameterType="String" resultType="io.renren.entity.Address">
+    <select id="isExistAddress" parameterType="Long" resultType="io.renren.entity.Address">
         SELECT * FROM address
         <where>
-            <if test="id != null and id != ''">
+            <if test="id != null">
                 id = #{id}
             </if>
         </where>
@@ -306,11 +306,11 @@
             </if>
         </where>
     </update>
-    <update id="updateState">
+    <update id="updateState" parameterType="Long">
         UPDATE address SET
         addressStatus = 1
         <where>
-            <if test="id != null and id != ''">
+            <if test="id != null">
                 id != #{id}
             </if>
             <if test="userId != null">

@@ -1,5 +1,6 @@
 package io.renren.modules.production.dto;
 
+import io.renren.modules.sys.dto.UserMemberDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -45,5 +46,7 @@ public class CommodityDTO implements Serializable {
 	private String description;
 
 	private List<CCommodityLbDTO> dtos;
+
+	private List<UserMemberDTO> members;
 
 }
