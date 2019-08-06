@@ -11,6 +11,7 @@ package io.renren.controller;
 
 import io.renren.annotation.Login;
 import io.renren.common.utils.Result;
+import io.renren.common.utils.SnowFlake;
 import io.renren.dto.RegisterDTO;
 import io.renren.entity.*;
 import io.renren.service.ProductionService;
@@ -70,6 +71,22 @@ public class ProductionController {
     }
 
     /**
+     * 功能描述: <br>
+     * 〈获取单件商品信息〉
+     * @Param: [request]
+     * @Return: java.lang.Object
+     * @Author: dinggc
+     * @Date: 2019/7/29 22:40
+     */
+    @RequestMapping(value = "getProductionsById")
+    @ResponseBody
+    public Object getProductionsById(@RequestBody Commodity commodity){
+        ObjectCommodity productions = productionService.getProductionsById(commodity.getId());
+        productions.setDescription(productions.getDescription().replaceAll("<img","<img style='max-width:100%;height:auto;'"));
+        return new Result().ok(productions);
+    }
+
+    /**
      * 插入购物车商品信息
      * @param shoppingCar
      * @return
@@ -90,7 +107,9 @@ public class ProductionController {
             shoppingCar.setDate(new Date());
             productionService.updateCarProduction(shoppingCar);
         }else{
+            SnowFlake snowFlake = new SnowFlake();
             shoppingCar.setDate(new Date());
+            shoppingCar.setId(snowFlake.nextId());
             productionService.insertShoppingCar(shoppingCar);
         }
         return new Result().success();

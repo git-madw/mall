@@ -109,4 +109,11 @@ public interface ProductionDao {
      * 获取用户的所有的收获地址
      */
     List<Address> getAddress(@Param("userId") Long userId);
+
+    /**
+     * 根据商品id获取商品的相关信息
+     * @param commodityId
+     * @return
+     */
+    ObjectCommodity getProductionsById(@Param("commodityId") Long commodityId);
 }

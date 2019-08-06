@@ -12,7 +12,19 @@ public class ObjectCommodity extends Commodity{
     private Brand brand;
     private Sku sku;
 
+    private List<CCommodityLbEntity> lbs;
+
+
     private ObjectCommodityInfo objectCommodityInfo;
+
+
+    public List<CCommodityLbEntity> getLbs() {
+        return lbs;
+    }
+
+    public void setLbs(List<CCommodityLbEntity> lbs) {
+        this.lbs = lbs;
+    }
 
     public ObjectCommodityInfo getObjectCommodityInfo() {
         return objectCommodityInfo;

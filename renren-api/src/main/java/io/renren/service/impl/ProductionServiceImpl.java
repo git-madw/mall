@@ -140,4 +140,9 @@ public class ProductionServiceImpl implements ProductionService {
     public List<Address> getAddress(Long userId) {
         return productionDao.getAddress(userId);
     }
+
+    @Override
+    public ObjectCommodity getProductionsById(Long commodityId) {
+        return productionDao.getProductionsById(commodityId);
+    }
 }

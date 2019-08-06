@@ -65,7 +65,7 @@
     <insert id="insertShoppingCar" parameterType="io.renren.entity.ShoppingCar">
         INSERT INTO c_shoppingcar
         (id,skuName,skuPrice,skuNumber,totalPrice,userId,commodityId,date,skuId,commodityPicture,isChoose,
-        inStockAddress,color)
+        inStockAddress)
         VALUES (
             #{shoppingCar.id},
         <if test=" shoppingCar.skuName != null and shoppingCar.skuName != ''">
@@ -80,14 +80,14 @@
         <if test="shoppingCar.totalPrice != null">
             #{shoppingCar.totalPrice},
         </if>
-        <if test="shoppingCar.userId != null and shoppingCar.userId != ''">
+        <if test="shoppingCar.userId != null">
             #{shoppingCar.userId},
         </if>
-        <if test="shoppingCar.commodityId != null and shoppingCar.commodityId != ''">
+        <if test="shoppingCar.commodityId != null">
             #{shoppingCar.commodityId},
         </if>
             #{shoppingCar.date},
-        <if test="shoppingCar.skuId != null and shoppingCar.skuId != ''">
+        <if test="shoppingCar.skuId != null">
             #{shoppingCar.skuId},
         </if>
         <if test="shoppingCar.commodityPicture != null and shoppingCar.commodityPicture != ''">
@@ -97,10 +97,7 @@
             #{shoppingCar.isChoose},
         </if>
         <if test=" shoppingCar.inStockAddress != null and shoppingCar.inStockAddress != ''">
-            #{shoppingCar.inStockAddress},
-        </if>
-        <if test="shoppingCar.color != null and shoppingCar.color != ''">
-            #{shoppingCar.color}
+            #{shoppingCar.inStockAddress}
         </if>
         )
     </insert>
@@ -127,14 +124,11 @@
             totalPrice = #{shoppingCar.totalPrice}
         </if>
         <where>
-            <if test="shoppingCar.commodityId != null and shoppingCar.commodityId != ''">
+            <if test="shoppingCar.commodityId != null">
                 commodityId = #{shoppingCar.commodityId}
             </if>
-            <if test="shoppingCar.skuId != null and shoppingCar.skuId != ''">
+            <if test="shoppingCar.skuId != null">
                 AND skuId = #{shoppingCar.skuId}
-            </if>
-            <if test="shoppingCar.color != null and shoppingCar.color != ''">
-                AND color = #{shoppingCar.color}
             </if>
         </where>
     </update>
@@ -207,7 +201,7 @@
         LEFT JOIN c_sku ON c_shoppingcar.skuId = c_sku.id
         <where>
             c_shoppingcar.isChoose = "0"
-            <if test="userId != null and userId != ''">
+            <if test="userId != null">
                 AND c_shoppingcar.userId = #{userId}
             </if>
         </where>
@@ -232,7 +226,7 @@
             totalPrice = #{shoppingCar.totalPrice}
         </if>
         <where>
-            <if test="shoppingCar.id != null and shoppingCar.id != ''">
+            <if test="shoppingCar.id != null">
                 id = #{shoppingCar.id}
             </if>
         </where>
@@ -240,7 +234,7 @@
     <delete id="deleteCarProductions" parameterType="Long">
         DELETE FROM c_shoppingCar
         <where>
-            <if test="userId != null and userId != ''">
+            <if test="userId != null">
                 userId = #{userId}
             </if>
         </where>
@@ -257,7 +251,7 @@
         INSERT INTO address
         (id,userAddress,detailAddress,addressStatus,userId,name,tel)
         VALUES (
-        <if test="address.id != null and address.id != ''">
+        <if test="address.id != null">
             #{address.id},
         </if>
         <if test="address.userAddress != null and address.userAddress != ''">
@@ -269,7 +263,7 @@
         <if test="address.addressStatus != null">
             #{address.addressStatus},
         </if>
-        <if test="address.userId != null and address.userId != ''">
+        <if test="address.userId != null">
             #{address.userId},
         </if>
         <if test="address.name != null and address.name != ''">
@@ -291,7 +285,7 @@
         <if test="address.addressStatus != null">
             addressStatus = #{address.addressStatus},
         </if>
-        <if test="address.userId != null and address.userId != ''">
+        <if test="address.userId != null">
             userId = #{address.userId},
         </if>
         <if test="address.name != null and address.name != ''">
@@ -301,7 +295,7 @@
             tel = #{address.tel}
         </if>
         <where>
-            <if test="address.id != null and address.id !=''">
+            <if test="address.id != null">
                 id = #{address.id}
             </if>
         </where>
@@ -332,6 +326,48 @@
         <where>
             <if test="userId != null">
                 userId = #{userId}
+            </if>
+        </where>
+    </select>
+    <resultMap id="productionById" type="io.renren.entity.ObjectCommodity">
+        <result column="cId" property="id" />
+        <result column="commodityName" property="commodityName" />
+        <result column="commodityPicture" property="commodityPicture" />
+        <result column="classificationFirstId" property="classificationFirstId" />
+        <result column="classificationSecondId" property="classificationSecondId" />
+        <result column="brandId" property="brandId" />
+        <result column="cDate" property="date" />
+        <result column="cDescription" property="description" />
+        <association property="sku" javaType="io.renren.entity.Sku">
+            <result column="sId" property="id" />
+            <result column="sCommodityId" property="commodityId" />
+            <result column="inStock" property="inStock" />
+            <result column="price" property="price" />
+            <result column="skuName" property="skuName" />
+            <result column="skuSalesVolume" property="skuSalesVolume" />
+            <result column="inStockAddress" property="inStockAddress" />
+            <result column="sDate" property="date" />
+        </association>
+        <collection property="lbs" ofType="io.renren.entity.CCommodityLbEntity">
+            <result column="lId" property="id" />
+            <result column="lCommodityId" property="commodityid" />
+            <result column="lUrl" property="url" />
+        </collection>
+    </resultMap>
+
+    <select id="getProductionsById" resultMap="productionById" parameterType="Long">
+        SELECT commodity.id AS cId,commodity.commodityName,commodity.commodityPicture,
+        commodity.classificationFirstId,commodity.classificationSecondId,commodity.brandId,
+        commodity.date AS cDate,commodity.description AS cDescription,c_commodity_lb.id AS lId,
+        c_commodity_lb.commodityId AS lCommodityId,c_commodity_lb.url AS lUrl,
+        c_sku.id AS sId,c_sku.commodityId AS sCommodityId,
+        c_sku.inStock,c_sku.skuName,c_sku.price,c_sku.date AS sDate,c_sku.skuSalesVolume,c_sku.inStockAddress
+        FROM commodity
+        LEFT JOIN c_commodity_lb ON commodity.id = c_commodity_lb.commodityId
+        LEFT JOIN c_sku ON commodity.id = c_sku.commodityId
+        <where>
+            <if test="commodityId != null">
+                commodity.id = #{commodityId}
             </if>
         </where>
     </select>
